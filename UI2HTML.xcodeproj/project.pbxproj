@@ -10,6 +10,8 @@
 		A4CE34431B6A624C0059668B /* UI2HTML.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4CE34421B6A624C0059668B /* UI2HTML.h */; };
 		A4CE34451B6A624C0059668B /* UI2HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CE34441B6A624C0059668B /* UI2HTML.m */; };
 		A4CE344B1B6A624D0059668B /* libUI2HTML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4CE343F1B6A624C0059668B /* libUI2HTML.a */; };
+		A4CE345B1B6A62BB0059668B /* UI2HTML_Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CE345A1B6A62BB0059668B /* UI2HTML_Tag.m */; };
+		A4CE345D1B6A62C50059668B /* UI2HTMLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CE345C1B6A62C50059668B /* UI2HTMLTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,9 @@
 		A4CE34441B6A624C0059668B /* UI2HTML.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UI2HTML.m; sourceTree = "<group>"; };
 		A4CE344A1B6A624D0059668B /* UI2HTMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UI2HTMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CE34501B6A624D0059668B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4CE34591B6A62BB0059668B /* UI2HTML_Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI2HTML_Tag.h; sourceTree = "<group>"; };
+		A4CE345A1B6A62BB0059668B /* UI2HTML_Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UI2HTML_Tag.m; sourceTree = "<group>"; };
+		A4CE345C1B6A62C50059668B /* UI2HTMLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UI2HTMLTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +88,8 @@
 		A4CE34411B6A624C0059668B /* UI2HTML */ = {
 			isa = PBXGroup;
 			children = (
+				A4CE34591B6A62BB0059668B /* UI2HTML_Tag.h */,
+				A4CE345A1B6A62BB0059668B /* UI2HTML_Tag.m */,
 				A4CE34421B6A624C0059668B /* UI2HTML.h */,
 				A4CE34441B6A624C0059668B /* UI2HTML.m */,
 			);
@@ -92,6 +99,7 @@
 		A4CE344E1B6A624D0059668B /* UI2HTMLTests */ = {
 			isa = PBXGroup;
 			children = (
+				A4CE345C1B6A62C50059668B /* UI2HTMLTest.m */,
 				A4CE344F1B6A624D0059668B /* Supporting Files */,
 			);
 			path = UI2HTMLTests;
@@ -193,6 +201,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4CE345B1B6A62BB0059668B /* UI2HTML_Tag.m in Sources */,
 				A4CE34451B6A624C0059668B /* UI2HTML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +210,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4CE345D1B6A62C50059668B /* UI2HTMLTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
