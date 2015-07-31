@@ -22,9 +22,9 @@
     return self;
 }
 
-- (instancetype)initWithTagObject:(id)tagObject {
+- (instancetype)initWithTagObject:(Class)tagObject {
     if(self = [super init]) {
-        self.tagString = NSStringFromClass([tagObject class]);
+        self.tagString = NSStringFromClass(tagObject);
     }
     return self;
 }
@@ -38,7 +38,7 @@
     return self;
 }
 
-- (instancetype)initWithTagObject:(id)tagObject Class:(NSString *)classString {
+- (instancetype)initWithTagObject:(Class)tagObject Class:(NSString *)classString {
     if(self = [self initWithTagObject:tagObject]) {
         self.classString = classString;
     }
@@ -54,7 +54,7 @@
     return self;
 }
 
-- (instancetype)initWithTagObject:(id)tagObject Class:(NSString *) classString Id:(NSString *)idString {
+- (instancetype)initWithTagObject:(Class)tagObject Class:(NSString *) classString Id:(NSString *)idString {
     if(self = [self initWithTagObject:tagObject Class:classString]) {
         self.idString = idString;
     }

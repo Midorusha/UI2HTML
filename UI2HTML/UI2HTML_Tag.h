@@ -18,15 +18,15 @@
 
 //Initializer for tag
 - (nullable instancetype)initWithTag:(nonnull NSString *)tagString;
-- (nullable instancetype)initWithTagObject:(nonnull id)tagObject;
+- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject;
 
 //Inintializer for tag and class
 - (nullable instancetype)initWithTag:(nonnull NSString *)tagString Class:(nullable NSString *)classString;
-- (nullable instancetype)initWithTagObject:(nonnull id)tagObject Class:(nullable NSString *)classString;
+- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject Class:(nullable NSString *)classString;
 
 //Initializer for tag, class, and id
 - (nullable instancetype)initWithTag:(nonnull NSString *)tagString Class:(nullable NSString *) classString Id:(nullable NSString *)idString;
-- (nullable instancetype)initWithTagObject:(nonnull id)tagObject Class:(nullable NSString *) classString Id:(nullable NSString *)idString;
+- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject Class:(nullable NSString *) classString Id:(nullable NSString *)idString;
 
 //Set, Add, and Remove Styles.
 //Can take mixed arrays of type NSString * or id.
