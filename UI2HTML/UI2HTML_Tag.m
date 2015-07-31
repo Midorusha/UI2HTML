@@ -14,9 +14,19 @@
 @implementation UI2HTML_Tag
 
 #pragma mark -Constructors
-- (instancetype)initWithTag:(NSString *)tagString {
+-(instancetype)init {
     if(self = [super init]) {
-        self.tagString = tagString;
+        self.tagString   = @"";
+        self.idString    = @"";
+        self.classString = @"";
+        self.customStyle = [[NSMutableString alloc] init];
+    }
+    return self;
+}
+
+- (instancetype)initWithTag:(NSString *)tagString {
+    if(self = [self init]) {
+        self.tagString   = tagString;
     }
     return self;
 }
