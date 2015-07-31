@@ -82,6 +82,7 @@
     NILCAPACITYCHECK(classesArray);
     __block NSMutableString *classListString = [[NSMutableString alloc] init];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if([classListString length]) [classListString appendString:@" "];
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
             [classListString appendString:obj];
         }
@@ -89,7 +90,6 @@
             //null id instances will print (nil). We don't want that.
             [classListString appendString:NSStringFromClass([obj class])];
         }
-        if([classListString length]) [classListString appendString:@" "];
     }];
     if([classListString length]) [self setClassString:classListString];
 }
@@ -111,6 +111,7 @@
     NILCAPACITYCHECK(classesArray);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if([tmpClassString length]) [tmpClassString appendString:@" "];
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
             [UI2HTML_Tag appendIfNotFound:tmpClassString string:obj];
         }
@@ -118,7 +119,6 @@
             //null id instances will print (nil). We don't want that.
             [UI2HTML_Tag appendIfNotFound:tmpClassString string:NSStringFromClass([obj class])];
         }
-        if([tmpClassString length]) [tmpClassString appendString:@" "];
     }];
     if([tmpClassString length]) [self setClassString:tmpClassString];
 }
