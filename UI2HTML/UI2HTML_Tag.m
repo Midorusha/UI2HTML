@@ -32,7 +32,7 @@
 }
 
 - (instancetype)initWithTagObject:(id)tagObject {
-    if(self = [super init]) {
+    if(self = [self init]) {
         NSMutableString * tmp = [[NSMutableString alloc] initWithString:NSStringFromClass([tagObject class])];
         [tmp replaceOccurrencesOfString:@"_UI2HTML"
                              withString:@""
