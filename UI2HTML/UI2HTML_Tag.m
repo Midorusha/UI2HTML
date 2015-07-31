@@ -8,9 +8,8 @@
 
 #import "UI2HTML_Tag.h"
 
-@interface UI2HTML_Tag()
-@property(nonatomic, copy) NSMutableDictionary *stylesCache;
-@end
+#define NILCAPACITYCHECK(container) if(nil == container || ![container count]) return
+
 //TODO should i make all NSString setters to do NSSTRING copy?
 @implementation UI2HTML_Tag
 
@@ -70,6 +69,7 @@
 
 #pragma mark -Setters
 - (void)setClasses:(NSArray *)classesArray {
+    NILCAPACITYCHECK(classesArray);
     __block NSMutableString *classListString = [[NSMutableString alloc] init];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
@@ -86,6 +86,7 @@
 
 //TODO: This needs huge testing with everything, need to make sure obj gets translated properly
 - (void)setStyles:(NSDictionary *)stylesArray {
+    NILCAPACITYCHECK(stylesArray);
     __block NSMutableString *styleListString = [[NSMutableString alloc] init];
     [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
@@ -97,6 +98,7 @@
 
 
 - (void)addClasses:(NSArray *)classesArray {
+    NILCAPACITYCHECK(classesArray);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
@@ -113,6 +115,7 @@
 
 // TODO: Same testing issue here only adds styles if not found
 - (void)addStyles:(nullable NSDictionary *)stylesArray {
+    NILCAPACITYCHECK(stylesArray);
     __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self customStyle]];
     [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
@@ -143,6 +146,7 @@
 
 // TODO: need to trim string to get rid of multiple white spaces
 - (void)removeClasses:(NSArray *)classesToRemove {
+    NILCAPACITYCHECK(classesToRemove);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesToRemove enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([NSNull null] != obj) {
@@ -157,6 +161,7 @@
 }
 
 - (void)removeStyles:(NSDictionary *)stylesToRemove {
+    NILCAPACITYCHECK(stylesToRemove);
     __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self customStyle]];
     [stylesToRemove enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
