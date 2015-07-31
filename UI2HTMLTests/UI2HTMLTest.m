@@ -12,14 +12,16 @@
 #import "UI2HTML_Tag.h"
 
 QuickSpecBegin(UI2HTML_TagSpec)
-    qck_describe(@"A Tag", ^{
+    qck_describe(@"New Tags", ^{
         __block UI2HTML_Tag *tag = nil;
         qck_beforeEach(^{
             tag = [UI2HTML_Tag new];
         });
-        it(@"addClasses", ^{
-            [tag addClasses:nil];
-            expect(@(1+1)).to(equal(@2));
+        it(@"contain empty strings", ^{
+            expect([tag tagString]).to(beNil());
+            expect([tag idString]).to(beNil());
+            expect([tag classString]).to(beNil());
+            expect([tag customStyle]).to(beNil());
         });
     });
 
