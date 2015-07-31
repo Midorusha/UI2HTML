@@ -18,15 +18,15 @@
 
 //Initializer for tag
 - (nullable instancetype)initWithTag:(nonnull NSString *)tagString;
-- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject;
+- (nullable instancetype)initWithTagObject:(nonnull id)tagObject;
 
 //Inintializer for tag and class
-- (nullable instancetype)initWithTag:(nonnull NSString *)tagString Class:(nullable NSString *)classString;
-- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject Class:(nullable NSString *)classString;
+- (nullable instancetype)initWithTag:(nonnull NSString *)tagString class:(nullable NSString *)classString;
+- (nullable instancetype)initWithTagObject:(nonnull id)tagObject class:(nullable NSString *)classString;
 
 //Initializer for tag, class, and id
-- (nullable instancetype)initWithTag:(nonnull NSString *)tagString Class:(nullable NSString *) classString Id:(nullable NSString *)idString;
-- (nullable instancetype)initWithTagObject:(nonnull Class)tagObject Class:(nullable NSString *) classString Id:(nullable NSString *)idString;
+- (nullable instancetype)initWithTag:(nonnull NSString *)tagString class:(nullable NSString *)classString id:(nullable NSString *)idString;
+- (nullable instancetype)initWithTagObject:(nonnull id)tagObject class:(nullable NSString *)classString id:(nullable NSString *)idString;
 
 //Set, Add, and Remove Styles.
 //Can take mixed arrays of type NSString * or id.
@@ -58,11 +58,11 @@
 //Creates <tag id="special" class="baseTag" style="margin:0;">Content Here Slightly faster</tag>
 - (nonnull NSString *)wrapContentWithTag:(nonnull NSString *)content;
 
-+ (void)appendIfNotFound:(nonnull NSMutableString *)searchString String:(nonnull NSString *)string;
-+ (void)appendIfNotFound:(nonnull NSMutableString *)searchString SubString:(nonnull NSString *)subString String:(nonnull NSString *)string;
++ (void)appendIfNotFound:(nonnull NSMutableString *)searchString string:(nonnull NSString *)string;
++ (void)appendIfNotFound:(nonnull NSMutableString *)searchString subString:(nonnull NSString *)subString string:(nonnull NSString *)string;
 + (NSUInteger)removeFromString:(nonnull NSMutableString *)searchString
-                  InsertString:(nonnull NSString *)insertString
-                         Start:(nonnull NSString *)startString
-                           End:(nonnull NSString *)endString;
+                  insertString:(nonnull NSString *)insertString
+                         start:(nonnull NSString *)startString
+                           end:(nonnull NSString *)endString;
                                                                                                  
 @end

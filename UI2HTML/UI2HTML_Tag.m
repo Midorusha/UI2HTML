@@ -22,23 +22,28 @@
     return self;
 }
 
-- (instancetype)initWithTagObject:(Class)tagObject {
+- (instancetype)initWithTagObject:(id)tagObject {
     if(self = [super init]) {
-        self.tagString = NSStringFromClass(tagObject);
+        NSMutableString * tmp = [[NSMutableString alloc] initWithString:NSStringFromClass([tagObject class])];
+        [tmp replaceOccurrencesOfString:@"_UI2HTML"
+                             withString:@""
+                                options:0
+                                  range:NSMakeRange(0, [tmp length])];
+        self.tagString = [tmp lowercaseString];
     }
     return self;
 }
 
 
 
-- (instancetype)initWithTag:(NSString *)tagString Class:(NSString *)classString {
+- (instancetype)initWithTag:(NSString *)tagString class:(NSString *)classString {
     if(self = [self initWithTag:tagString]) {
         self.classString = classString;
     }
     return self;
 }
 
-- (instancetype)initWithTagObject:(Class)tagObject Class:(NSString *)classString {
+- (instancetype)initWithTagObject:(id)tagObject class:(NSString *)classString {
     if(self = [self initWithTagObject:tagObject]) {
         self.classString = classString;
     }
@@ -47,15 +52,15 @@
 
 
 
-- (instancetype)initWithTag:(NSString *)tagString Class:(NSString *) classString Id:(NSString *)idString {
-    if(self = [self initWithTag:tagString Class:classString]) {
+- (instancetype)initWithTag:(NSString *)tagString class:(NSString *) classString id:(NSString *)idString {
+    if(self = [self initWithTag:tagString class:classString]) {
         self.idString = idString;
     }
     return self;
 }
 
-- (instancetype)initWithTagObject:(Class)tagObject Class:(NSString *) classString Id:(NSString *)idString {
-    if(self = [self initWithTagObject:tagObject Class:classString]) {
+- (instancetype)initWithTagObject:(id)tagObject class:(NSString *) classString id:(NSString *)idString {
+    if(self = [self initWithTagObject:tagObject class:classString]) {
         self.idString = idString;
     }
     return self;
@@ -95,11 +100,11 @@
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
-            [UI2HTML_Tag appendIfNotFound:tmpClassString String:obj];
+            [UI2HTML_Tag appendIfNotFound:tmpClassString string:obj];
         }
         else if([NSNull null] != obj) {
             //null id instances will print (nil). We don't want that.
-            [UI2HTML_Tag appendIfNotFound:tmpClassString String:NSStringFromClass([obj class])];
+            [UI2HTML_Tag appendIfNotFound:tmpClassString string:NSStringFromClass([obj class])];
         }
         if([tmpClassString length]) [tmpClassString appendString:@" "];
     }];
@@ -111,7 +116,7 @@
     __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self customStyle]];
     [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
-            [UI2HTML_Tag appendIfNotFound:tmpStyleListString SubString:key String:[NSString stringWithFormat:@"%@:%@;", key, obj, nil]];
+            [UI2HTML_Tag appendIfNotFound:tmpStyleListString subString:key string:[NSString stringWithFormat:@"%@:%@;", key, obj, nil]];
             [tmpStyleListString appendFormat:@"%@:%@;", key, obj, nil];
         }
     }];
@@ -130,9 +135,9 @@
 - (void)removeStyle:(NSString *)styleToRemove {
     NSMutableString *tmpStyleString = [NSMutableString stringWithString:[self customStyle]];
     NSUInteger timesRemoved = [UI2HTML_Tag removeFromString:tmpStyleString
-                     InsertString:@""
-                            Start:styleToRemove
-                              End:@";"];
+                     insertString:@""
+                            start:styleToRemove
+                              end:@";"];
     if(timesRemoved) [self setCustomStyle:tmpStyleString];
 }
 
@@ -156,9 +161,9 @@
     [stylesToRemove enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
             [UI2HTML_Tag removeFromString:tmpStyleListString
-                             InsertString:@""
-                                    Start:key
-                                      End:@";"];
+                             insertString:@""
+                                    start:key
+                                      end:@";"];
         }
     }];
     if([tmpStyleListString length]) [self setCustomStyle:tmpStyleListString];
@@ -201,19 +206,19 @@
 
 
 #pragma mark - Utilities
-+ (void)appendIfNotFound:(NSMutableString *)searchString String:(NSString *)string {
++ (void)appendIfNotFound:(NSMutableString *)searchString string:(NSString *)string {
     if(![searchString containsString:string]) [searchString appendString:string];
 }
 
-+ (void)appendIfNotFound:(NSMutableString *)searchString SubString:(NSString *)subString String:(NSString *)string {
++ (void)appendIfNotFound:(NSMutableString *)searchString subString:(NSString *)subString string:(NSString *)string {
     if(![searchString containsString:subString]) [searchString appendString:string];
 }
 
 //Over Kill, reuse for remove and replace, but redo this to do a simple look up
 + (NSUInteger)removeFromString:(NSMutableString *)searchString
-                  InsertString:(NSString *)insertString
-                   Start:(NSString *)startString
-                     End:(NSString *)endString {
+                  insertString:(NSString *)insertString
+                   start:(NSString *)startString
+                     end:(NSString *)endString {
     NSError *error = NULL;
     NSString *findString = [NSString stringWithFormat:@"%@.*?%@", startString, endString, nil];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:findString
