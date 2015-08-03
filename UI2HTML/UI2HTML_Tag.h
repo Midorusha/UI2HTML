@@ -14,7 +14,7 @@
 @property(nonatomic, copy, nonnull) NSString *tagString;
 @property(nonatomic, copy, nullable) NSString *idString;
 @property(nonatomic, copy, nullable) NSString *classString;
-@property(nonatomic, copy, nullable) NSMutableString *customStyle;
+@property(nonatomic, copy, nullable) NSMutableString *inlineStyle;
 
 //Initializer with empty strings
 - (nullable instancetype)init;

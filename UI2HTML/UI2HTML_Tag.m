@@ -19,7 +19,7 @@
         self.tagString   = @"";
         self.idString    = @"";
         self.classString = @"";
-        self.customStyle = [[NSMutableString alloc] init];
+        self.inlineStyle = [[NSMutableString alloc] init];
     }
     return self;
 }
@@ -103,7 +103,7 @@
             [styleListString appendFormat:@"%@:%@;", key, obj, nil];
         }
     }];
-    if([styleListString length]) [self setCustomStyle:styleListString];
+    if([styleListString length]) [self setInlineStyle:styleListString];
 }
 
 
@@ -131,14 +131,14 @@
 // TODO: Same testing issue here only adds styles if not found
 - (void)addStyles:(nullable NSDictionary *)stylesArray {
     NILCAPACITYCHECK(stylesArray);
-    __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self customStyle]];
+    __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self inlineStyle]];
     [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
             [UI2HTML_Tag appendIfNotFound:tmpStyleListString subString:key string:[NSString stringWithFormat:@"%@:%@;", key, obj, nil]];
             [tmpStyleListString appendFormat:@"%@:%@;", key, obj, nil];
         }
     }];
-    if([tmpStyleListString length]) [self setCustomStyle:tmpStyleListString];
+    if([tmpStyleListString length]) [self setInlineStyle:tmpStyleListString];
 }
 
 - (void)removeClass:(NSString *)classToRemove {
@@ -154,12 +154,12 @@
 
 - (void)removeStyle:(NSString *)styleToRemove {
     STRINGCHECK(styleToRemove);
-    NSMutableString *tmpStyleString = [NSMutableString stringWithString:[self customStyle]];
+    NSMutableString *tmpStyleString = [NSMutableString stringWithString:[self inlineStyle]];
     NSUInteger timesRemoved = [UI2HTML_Tag removeFromString:tmpStyleString
                      insertString:@""
                             start:styleToRemove
                               end:@";"];
-    if(timesRemoved) [self setCustomStyle:tmpStyleString];
+    if(timesRemoved) [self setInlineStyle:tmpStyleString];
 }
 
 // TODO: need to trim string to get rid of multiple white spaces
@@ -182,7 +182,7 @@
 
 - (void)removeStyles:(NSDictionary *)stylesToRemove {
     NILCAPACITYCHECK(stylesToRemove);
-    __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self customStyle]];
+    __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self inlineStyle]];
     [stylesToRemove enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
             [UI2HTML_Tag removeFromString:tmpStyleListString
@@ -191,7 +191,7 @@
                                       end:@";"];
         }
     }];
-    if([tmpStyleListString length]) [self setCustomStyle:tmpStyleListString];
+    if([tmpStyleListString length]) [self setInlineStyle:tmpStyleListString];
 }
 
 
@@ -201,7 +201,7 @@
     NSMutableString *beginString = [[NSMutableString alloc] initWithFormat:@"<%@", [self tagString], nil];
     if([[self idString] length])    [beginString appendFormat:@"id=\"%@\"", [self idString], nil];
     if([[self classString] length]) [beginString appendFormat:@"class=\"%@\"", [self classString], nil];
-    if([[self customStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self customStyle], nil];
+    if([[self inlineStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self inlineStyle], nil];
     [beginString appendString:@">"];
     return beginString;
 }
@@ -212,7 +212,7 @@
     NSMutableString *beginString = [[NSMutableString alloc] initWithFormat:@"<%@", [self tagString], nil];
     if([[self idString] length])    [beginString appendFormat:@"id=\"%@\"", [self idString], nil];
     if([[self classString] length]) [beginString appendFormat:@"class=\"%@\"", [self classString], nil];
-    if([[self customStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self customStyle], nil];
+    if([[self inlineStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self inlineStyle], nil];
     [beginString appendFormat:@">%@", content, nil];
     return beginString;
 }
