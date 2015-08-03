@@ -9,7 +9,7 @@
 #import "UI2HTML_Tag.h"
 
 #define NILCAPACITYCHECK(container) if(nil == container || ![container count]) return
-
+#define STRINGCHECK(string) if(nil == string || ![string length]) return
 //TODO should i make all NSString setters to do NSSTRING copy?
 @implementation UI2HTML_Tag
 
@@ -111,13 +111,18 @@
     NILCAPACITYCHECK(classesArray);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if([tmpClassString length]) [tmpClassString appendString:@" "];
+        //find string to insert
+        NSString *insertString = nil;
         if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
-            [UI2HTML_Tag appendIfNotFound:tmpClassString string:obj];
+            insertString = obj;
         }
         else if([NSNull null] != obj) {
-            //null id instances will print (nil). We don't want that.
-            [UI2HTML_Tag appendIfNotFound:tmpClassString string:NSStringFromClass([obj class])];
+            insertString = NSStringFromClass([obj class]);
+        }
+        //insert string
+        if(insertString && ![tmpClassString containsString:insertString]) {
+            if([tmpClassString length]) [tmpClassString appendString:@" "];
+            [tmpClassString appendString:insertString];
         }
     }];
     if([tmpClassString length]) [self setClassString:tmpClassString];
@@ -137,8 +142,10 @@
 }
 
 - (void)removeClass:(NSString *)classToRemove {
+    STRINGCHECK(classToRemove);
     NSMutableString *tmpClassString = [NSMutableString stringWithString:[self classString]];
-    NSUInteger timesReplaced = [tmpClassString replaceOccurrencesOfString:classToRemove
+    NSString *removeString = [UI2HTML_Tag getRemoveClassString:tmpClassString string:classToRemove];
+    NSUInteger timesReplaced = [tmpClassString replaceOccurrencesOfString:removeString
                                     withString:@""
                                        options:0
                                          range:NSMakeRange(0, [tmpClassString length])];
@@ -146,6 +153,7 @@
 }
 
 - (void)removeStyle:(NSString *)styleToRemove {
+    STRINGCHECK(styleToRemove);
     NSMutableString *tmpStyleString = [NSMutableString stringWithString:[self customStyle]];
     NSUInteger timesRemoved = [UI2HTML_Tag removeFromString:tmpStyleString
                      insertString:@""
@@ -160,8 +168,10 @@
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
     [classesToRemove enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([NSNull null] != obj) {
-            NSString *findString = ([obj isKindOfClass:[NSString class]]) ? obj : NSStringFromClass([obj class]);
-            [tmpClassString replaceOccurrencesOfString:findString
+            NSString *classToRemove = ([obj isKindOfClass:[NSString class]]) ? obj : NSStringFromClass([obj class]);
+            STRINGCHECK(classToRemove);
+            NSString *removeString = [UI2HTML_Tag getRemoveClassString:tmpClassString string:classToRemove];
+            [tmpClassString replaceOccurrencesOfString:removeString
                                             withString:@""
                                                options:0
                                                  range:NSMakeRange(0, [tmpClassString length])];
@@ -242,4 +252,24 @@
     return [regex replaceMatchesInString:searchString options:0 range:NSMakeRange(0, [searchString length]) withTemplate:findString];
 }
 
++ (NSString *)getRemoveClassString:(NSMutableString *)tmpClassString string:(NSString *)classToRemove {
+    //first string - "class "
+    //last string  - " class"
+    //mid string   - "class "
+    //only string  - "class"
+    NSMutableString *removeString = nil;
+    if([tmpClassString containsString:@" "]) {
+        NSRange range = [tmpClassString rangeOfString:classToRemove];
+        if(range.location == 0) {
+            removeString = [NSMutableString stringWithFormat:@"%@ ", classToRemove, nil];
+        }
+        else {
+            removeString = [NSMutableString stringWithFormat:@" %@", classToRemove, nil];
+        }
+    }
+    else {
+        removeString = [NSMutableString stringWithString:classToRemove];
+    }
+    return removeString;
+}
 @end

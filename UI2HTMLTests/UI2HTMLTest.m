@@ -14,12 +14,6 @@
 
 #import "UI2HTML_Tag.h"
 
-static NSString *divTag = @"div";
-static NSString *idTag = @"special";
-static NSString *classTag1 = @"one";
-static NSString *classTag2 = @"two";
-static NSString *classTag3 = @"three";
-
 @interface Div_UI2HTML : NSObject
 @end
 @implementation Div_UI2HTML
@@ -29,7 +23,15 @@ static NSString *classTag3 = @"three";
  * Notes: Html Tags are insensitive
  */
 QuickSpecBegin(UI2HTML_TagSpec)
-__block UI2HTML_Tag * tag;
+
+    __block UI2HTML_Tag * tag;
+    static NSString *divTag = @"div";
+    static NSString *idTag = @"special";
+    static NSString *classTag1 = @"one";
+    static NSString *classTag2 = @"two";
+    static NSString *classTag3 = @"three";
+    NSString *classesString = [NSString stringWithFormat:@"%@ %@ %@", classTag1, classTag2, classTag3, nil];
+
     qck_describe(@"-init", ^{
         it(@"should contain empty strings", ^{
             tag = [[UI2HTML_Tag alloc] init];
@@ -96,7 +98,6 @@ __block UI2HTML_Tag * tag;
     });
 
     qck_describe(@"-setClasses:", ^{
-        __block UI2HTML_Tag *tag = nil;
         beforeEach(^{
             tag = [[UI2HTML_Tag alloc] init];
         });
@@ -122,12 +123,13 @@ __block UI2HTML_Tag * tag;
             [tag setClasses:@[classTag1, classTag2, classTag3]];
             expect([tag classString]).to(contain(classTag1));
             expect([tag classString]).to(contain(classTag2));
+            expect([tag classString]).to(equal(classesString));
+            
         });
     });
 
     //TODO: look up behave like
     qck_describe(@"-addClasses:", ^{
-        __block UI2HTML_Tag *tag = nil;
         beforeEach(^{
             tag = [[UI2HTML_Tag alloc] init];
         });
@@ -150,9 +152,54 @@ __block UI2HTML_Tag * tag;
         });
         it(@"should not contain duplicate classes", ^{
             [tag addClasses:@[classTag1, classTag2]];
+            NSString *checkString = [NSString stringWithFormat:@"%@ %@", classTag1, classTag2, nil];
+            expect([tag classString]).to(equal(checkString));
+            
             [tag addClasses:@[classTag1, classTag2, classTag3]];
-            expect([tag classString]).to(contain(classTag1));
-            expect([tag classString]).to(contain(classTag2));
+            expect([tag classString]).to(equal(classesString));
+        });
+    });
+
+    qck_describe(@"-removeClass:", ^{
+        beforeEach(^{
+            tag = [[UI2HTML_Tag alloc] init];
+            [tag addClasses:@[classTag1, classTag2, classTag3]];
+        });
+        it(@"should not remove class", ^{
+            [tag removeClass:@""];
+            expect([tag classString]).to(equal(classesString));
+        });
+        it(@"should remove first class", ^{
+            [tag removeClass:classTag1];
+            NSString *checkString = [NSString stringWithFormat:@"%@ %@", classTag2, classTag3, nil];
+            expect([tag classString]).to(equal(checkString));
+        });
+        it(@"should remove middle class", ^{
+            [tag removeClass:classTag2];
+            NSString *checkString = [NSString stringWithFormat:@"%@ %@", classTag1, classTag3, nil];
+            expect([tag classString]).to(equal(checkString));
+        });
+        it(@"should remove last class", ^{
+            [tag removeClass:classTag3];
+            NSString *checkString = [NSString stringWithFormat:@"%@ %@", classTag1, classTag2, nil];
+            expect([tag classString]).to(equal(checkString));
+        });
+    });
+        
+    qck_describe(@"-removeClasses:", ^{
+        beforeEach(^{
+            tag = [[UI2HTML_Tag alloc] init];
+            [tag addClasses:@[classTag1, classTag2, classTag3]];
+        });
+        it(@"should not remove classes", ^{
+            [tag removeClasses:@[]];
+            expect([tag classString]).to(equal(classesString));
+            [tag removeClasses:@[@""]];
+            expect([tag classString]).to(equal(classesString));
+        });
+        it(@"should remove two classes", ^{
+            [tag removeClasses:@[classTag1, classTag3]];
+            expect([tag classString]).to(equal(classTag2));
         });
     });
 
