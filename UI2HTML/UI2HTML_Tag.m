@@ -77,36 +77,7 @@
 
 
 
-#pragma mark -Setters
-- (void)setClasses:(NSArray *)classesArray {
-    NILCAPACITYCHECK(classesArray);
-    __block NSMutableString *classListString = [[NSMutableString alloc] init];
-    [classesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if([classListString length]) [classListString appendString:@" "];
-        if([obj isKindOfClass:[NSString class]] && [(NSString *)obj length]) {
-            [classListString appendString:obj];
-        }
-        else if(obj) {
-            //null id instances will print (nil). We don't want that.
-            [classListString appendString:NSStringFromClass([obj class])];
-        }
-    }];
-    if([classListString length]) [self setClassString:classListString];
-}
-
-//TODO: This needs huge testing with everything, need to make sure obj gets translated properly
-- (void)setStyles:(NSDictionary *)stylesArray {
-    NILCAPACITYCHECK(stylesArray);
-    __block NSMutableString *styleListString = [[NSMutableString alloc] init];
-    [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if([NSNull null] != obj) {
-            [styleListString appendFormat:@"%@:%@;", key, obj, nil];
-        }
-    }];
-    if([styleListString length]) [self setInlineStyle:styleListString];
-}
-
-
+#pragma mark -Main Functions
 - (void)addClasses:(NSArray *)classesArray {
     NILCAPACITYCHECK(classesArray);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
@@ -135,11 +106,12 @@
     [stylesArray enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if([NSNull null] != obj) {
             [UI2HTML_Tag appendIfNotFound:tmpStyleListString subString:key string:[NSString stringWithFormat:@"%@:%@;", key, obj, nil]];
-            [tmpStyleListString appendFormat:@"%@:%@;", key, obj, nil];
+            //[tmpStyleListString appendFormat:@"%@:%@;", key, obj, nil];
         }
     }];
     if([tmpStyleListString length]) [self setInlineStyle:tmpStyleListString];
 }
+
 
 - (void)removeClass:(NSString *)classToRemove {
     STRINGCHECK(classToRemove);
@@ -162,7 +134,7 @@
     if(timesRemoved) [self setInlineStyle:tmpStyleString];
 }
 
-// TODO: need to trim string to get rid of multiple white spaces
+
 - (void)removeClasses:(NSArray *)classesToRemove {
     NILCAPACITYCHECK(classesToRemove);
     __block NSMutableString *tmpClassString = [[NSMutableString alloc] initWithString:[self classString]];
@@ -177,55 +149,59 @@
                                                  range:NSMakeRange(0, [tmpClassString length])];
         }
     }];
-    if([tmpClassString length]) [self setClassString:tmpClassString];
+    [self setClassString:tmpClassString];
 }
 
-- (void)removeStyles:(NSDictionary *)stylesToRemove {
+- (void)removeStyles:(NSArray *)stylesToRemove {
     NILCAPACITYCHECK(stylesToRemove);
     __block NSMutableString *tmpStyleListString = [[NSMutableString alloc] initWithString:[self inlineStyle]];
-    [stylesToRemove enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [stylesToRemove enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if([NSNull null] != obj) {
+            NSString *styleToRemove = ([obj isKindOfClass:[NSString class]]) ? obj : NSStringFromClass([obj class]);
             [UI2HTML_Tag removeFromString:tmpStyleListString
                              insertString:@""
-                                    start:key
+                                    start:styleToRemove
                                       end:@";"];
         }
     }];
-    if([tmpStyleListString length]) [self setInlineStyle:tmpStyleListString];
+    [self setInlineStyle:tmpStyleListString];
 }
 
 
+- (void)clearClasses {
+    [self setClassString:@""];
+}
+
+- (void)clearStyles {
+    [self setInlineStyle:[NSMutableString string]];
+}
+
 #pragma mark - String Operators
 //Creates <tag id="special" class="baseTag" style="margin:0;">
-- (NSString *)beginningTagString {
+- (NSString *)beginTag {
     NSMutableString *beginString = [[NSMutableString alloc] initWithFormat:@"<%@", [self tagString], nil];
-    if([[self idString] length])    [beginString appendFormat:@"id=\"%@\"", [self idString], nil];
-    if([[self classString] length]) [beginString appendFormat:@"class=\"%@\"", [self classString], nil];
-    if([[self inlineStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self inlineStyle], nil];
+    if([[self idString] length])    [beginString appendFormat:@" id=\"%@\"", [self idString], nil];
+    if([[self classString] length]) [beginString appendFormat:@" class=\"%@\"", [self classString], nil];
+    if([[self inlineStyle] length]) [beginString appendFormat:@" style=\"%@\"", [self inlineStyle], nil];
     [beginString appendString:@">"];
     return beginString;
 }
 
 //Creates <tag id="special" class="baseTag" style="margin:0;">Content Here Slightly faster
-- (NSMutableString *)beginningTagStringWithContent:(NSString *)content {
-    NSAssert([content length], @"Content should not be null");
-    NSMutableString *beginString = [[NSMutableString alloc] initWithFormat:@"<%@", [self tagString], nil];
-    if([[self idString] length])    [beginString appendFormat:@"id=\"%@\"", [self idString], nil];
-    if([[self classString] length]) [beginString appendFormat:@"class=\"%@\"", [self classString], nil];
-    if([[self inlineStyle] length]) [beginString appendFormat:@"style=\"%@\"", [self inlineStyle], nil];
-    [beginString appendFormat:@">%@", content, nil];
-    return beginString;
+- (NSMutableString *)beginTagWithContent:(NSString *)content {
+    NSAssert((nil != content && [content length]), @"String should not be null or empty.");
+    return [NSMutableString stringWithFormat:@"%@%@", [self beginTag], content, nil];
 }
 
 //Creates </tag>
-- (NSString *)closingTagString {
+- (NSString *)endTag {
     return [[NSString alloc] initWithFormat:@"</%@>", [self tagString], nil];
 }
 
 //Creates <tag id="special" class="baseTag" style="margin:0;">Content Here Slightly faster</tag>
 - (NSString *)wrapContentWithTag:(NSString *)content {
-    NSMutableString *wrappingContentString = [self beginningTagStringWithContent:content];
-    [wrappingContentString appendString:[self closingTagString]];
+    NSMutableString *wrappingContentString = [self beginTagWithContent:content];
+    [wrappingContentString appendString:[self endTag]];
     return wrappingContentString;
 }
 
@@ -245,11 +221,11 @@
                    start:(NSString *)startString
                      end:(NSString *)endString {
     NSError *error = NULL;
-    NSString *findString = [NSString stringWithFormat:@"%@.*?%@", startString, endString, nil];
+    NSString *findString = [NSString stringWithFormat:@"(%@)(.*?)(%@)", startString, endString, nil];
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:findString
                                                                            options:0
                                                                              error:&error];
-    return [regex replaceMatchesInString:searchString options:0 range:NSMakeRange(0, [searchString length]) withTemplate:findString];
+    return [regex replaceMatchesInString:searchString options:0 range:NSMakeRange(0, [searchString length]) withTemplate:@""];
 }
 
 + (NSString *)getRemoveClassString:(NSMutableString *)tmpClassString string:(NSString *)classToRemove {

@@ -31,10 +31,6 @@
 - (nullable instancetype)initWithTag:(nonnull NSString *)tagString class:(nullable NSString *)classString id:(nullable NSString *)idString;
 - (nullable instancetype)initWithTagObject:(nonnull id)tagObject class:(nullable NSString *)classString id:(nullable NSString *)idString;
 
-//Set, Add, and Remove Styles.
-//Can take mixed arrays of type NSString * or id.
-- (void)setClasses:(nullable NSArray *)classesArray;
-- (void)setStyles:(nullable NSDictionary *)stylesArray;
 
 //Only adds Classes and styles if not found
 //must remove Style and readd to edit
@@ -46,26 +42,21 @@
 - (void)removeStyle:(nonnull NSString *)styleToRemove;
 
 - (void)removeClasses:(nonnull NSArray *)classesToRemove;
-- (void)removeStyles:(nonnull NSDictionary *)stylesToRemove;
+- (void)removeStyles:(nonnull NSArray *)stylesToRemove;
 
+- (void)clearClasses;
+- (void)clearStyles;
 
 //Creates <tag id="special" class="baseTag" style="margin:0;">
-- (nonnull NSString *)beginningTagString;
+- (nonnull NSString *)beginTag;
 //Creates </tag>
-- (nonnull NSString *)closingTagString;
+- (nonnull NSString *)endTag;
 
 //Creates <tag id="special" class="baseTag" style="margin:0;">Content Here Slightly faster</tag>
 //used internally for wrapContentWithTag, but there might be other uses for it later
-- (nonnull NSMutableString *)beginningTagStringWithContent:(nullable NSString *)content;
+- (nonnull NSMutableString *)beginTagWithContent:(nullable NSString *)content;
 
 //Creates <tag id="special" class="baseTag" style="margin:0;">Content Here Slightly faster</tag>
 - (nonnull NSString *)wrapContentWithTag:(nonnull NSString *)content;
 
-+ (void)appendIfNotFound:(nonnull NSMutableString *)searchString string:(nonnull NSString *)string;
-+ (void)appendIfNotFound:(nonnull NSMutableString *)searchString subString:(nonnull NSString *)subString string:(nonnull NSString *)string;
-+ (NSUInteger)removeFromString:(nonnull NSMutableString *)searchString
-                  insertString:(nonnull NSString *)insertString
-                         start:(nonnull NSString *)startString
-                           end:(nonnull NSString *)endString;
-                                                                                                 
 @end
