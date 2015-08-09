@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E37746427DD468C7D9379EA /* Pods_UI2HTMLTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DCA3438BB21605B7F411E1 /* Pods_UI2HTMLTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A40AE23A1B71B8EB0033E2E5 /* UI2HTML_TableTag.m in Sources */ = {isa = PBXBuildFile; fileRef = A40AE2391B71B8EB0033E2E5 /* UI2HTML_TableTag.m */; };
 		A4CE34431B6A624C0059668B /* UI2HTML.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A4CE34421B6A624C0059668B /* UI2HTML.h */; };
 		A4CE34451B6A624C0059668B /* UI2HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CE34441B6A624C0059668B /* UI2HTML.m */; };
 		A4CE344B1B6A624D0059668B /* libUI2HTML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4CE343F1B6A624C0059668B /* libUI2HTML.a */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		46DCA3438BB21605B7F411E1 /* Pods_UI2HTMLTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UI2HTMLTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		623E38629DEA53CC38715F02 /* Pods-UI2HTMLTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UI2HTMLTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UI2HTMLTests/Pods-UI2HTMLTests.release.xcconfig"; sourceTree = "<group>"; };
+		A40AE2381B71B8EB0033E2E5 /* UI2HTML_TableTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UI2HTML_TableTag.h; sourceTree = "<group>"; };
+		A40AE2391B71B8EB0033E2E5 /* UI2HTML_TableTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UI2HTML_TableTag.m; sourceTree = "<group>"; };
 		A4CE343F1B6A624C0059668B /* libUI2HTML.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUI2HTML.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4CE34421B6A624C0059668B /* UI2HTML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI2HTML.h; sourceTree = "<group>"; };
 		A4CE34441B6A624C0059668B /* UI2HTML.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UI2HTML.m; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 				A4CE345A1B6A62BB0059668B /* UI2HTML_Tag.m */,
 				A4CE34421B6A624C0059668B /* UI2HTML.h */,
 				A4CE34441B6A624C0059668B /* UI2HTML.m */,
+				A40AE2381B71B8EB0033E2E5 /* UI2HTML_TableTag.h */,
+				A40AE2391B71B8EB0033E2E5 /* UI2HTML_TableTag.m */,
 			);
 			path = UI2HTML;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A40AE23A1B71B8EB0033E2E5 /* UI2HTML_TableTag.m in Sources */,
 				A4CE345B1B6A62BB0059668B /* UI2HTML_Tag.m in Sources */,
 				A4CE34451B6A624C0059668B /* UI2HTML.m in Sources */,
 			);
