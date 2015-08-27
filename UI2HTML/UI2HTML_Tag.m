@@ -10,7 +10,6 @@
 
 #define NILCAPACITYCHECK(container) if(nil == container || ![container count]) return
 #define STRINGCHECK(string) if(nil == string || ![string length]) return
-//TODO should i make all NSString setters to do NSSTRING copy?
 @implementation UI2HTML_Tag
 
 #pragma mark -Constructors
